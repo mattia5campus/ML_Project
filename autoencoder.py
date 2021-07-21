@@ -1,11 +1,13 @@
 
-import keras
-from keras import layers
-from keras.datasets import mnist
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras.datasets import mnist
 import numpy as np
 from matplotlib import pyplot as plt
 
-from keras.callbacks import TensorBoard
+from tensorflow.keras.callbacks import TensorBoard
+
+import noisy as ns
 
 
 # Loading Dataset
@@ -38,7 +40,7 @@ for i in range(1, n + 1):
     plt.gray()
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
-plt.show()
+#plt.show()
 
 
 #  Loading Model
@@ -62,9 +64,16 @@ autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
 
 
 # Starting the training of the autoencoder
-autoencoder.fit(x_train_noisy, x_train,
+
+training_history = autoencoder.fit(x_train_noisy, x_train,
                 epochs=100,
                 batch_size=128,
                 shuffle=True,
-                validation_data=(x_test_noisy, x_test),
-                callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
+                validation_data=(x_test_noisy, x_test))
+                #callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
+
+autoencoder.save('autoencoder.h5')
+
+""" img_noised = ns.noisy('poisson',x_test_noisy[0])
+img = img_noised.figure()
+img.savefig('img_gauss_noise.jpg') """
