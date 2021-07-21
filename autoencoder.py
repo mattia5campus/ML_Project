@@ -65,15 +65,43 @@ autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
 
 # Starting the training of the autoencoder
 
-training_history = autoencoder.fit(x_train_noisy, x_train,
+""" training_history = autoencoder.fit(x_train_noisy, x_train,
                 epochs=100,
                 batch_size=128,
                 shuffle=True,
                 validation_data=(x_test_noisy, x_test))
-                #callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
+                #callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)]) """
 
-autoencoder.save('autoencoder.h5')
+#autoencoder.save('autoencoder.h5')
 
-""" img_noised = ns.noisy('poisson',x_test_noisy[0])
-img = img_noised.figure()
-img.savefig('img_gauss_noise.jpg') """
+# poisson noise
+img_poisson_noised = ns.noisy('poisson',x_test[0])
+
+
+# s&p noise
+img_sp_noised = ns.noisy('s&p',x_test[0])
+#print(np.shape(img_sp_noised))
+
+# speckle 
+img_speckle_noised = ns.noisy('speckle',x_test[0])
+
+idx = 0
+plt.subplot(1,4,1)
+plt.imshow(x_test[idx])
+plt.title('original')
+
+plt.subplot(1,4,2)
+plt.imshow(img_poisson_noised.reshape(28,28))
+plt.title('poisson_noise')
+
+plt.subplot(1,4,3)
+plt.imshow(img_speckle_noised.reshape(28,28))
+plt.title('speckle_noise')
+
+plt.subplot(1,4,4)
+plt.imshow(img_sp_noised.reshape(28,28))
+plt.title('salt_pepper_noise')
+
+plt.savefig('noisey_images')
+
+
