@@ -40,7 +40,8 @@ for i in range(1, n + 1):
     plt.gray()
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
-#plt.show()
+# plt.show()
+plt.savefig('noisy_digits.png')
 
 
 #  Loading Model
@@ -64,15 +65,14 @@ autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
 
 
 # Starting the training of the autoencoder
-
-training_history = autoencoder.fit(x_train_noisy, x_train,
-                epochs=100,
-                batch_size=128,
-                shuffle=True,
-                validation_data=(x_test_noisy, x_test))
-                #callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
-
-autoencoder.save('autoencoder.h5')
+# training_history = autoencoder.fit(x_train_noisy, x_train,
+#                 epochs=100,
+#                 batch_size=128,
+#                 shuffle=True,
+#                 validation_data=(x_test_noisy, x_test))
+# # callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
+#
+# autoencoder.save('autoencoder.h5')
 
 """ img_noised = ns.noisy('poisson',x_test_noisy[0])
 img = img_noised.figure()
