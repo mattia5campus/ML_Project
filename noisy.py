@@ -37,14 +37,12 @@ def noisy(noise_typ,image):
     s_vs_p = 0.5
     amount = 0.4
     out = np.copy(image)
-    print(image.size)
     # Salt mode
     num_salt = np.ceil(amount * image.size * s_vs_p)
    
     coords = [np.random.randint(0, i, int(num_salt))
             for i in image.shape]
     out[coords] = 1
-    print(image.size)
     # Pepper mode
     num_pepper = np.ceil(amount* image.size * (1. - s_vs_p))
     
