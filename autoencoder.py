@@ -130,6 +130,8 @@ mse(x_test, x_test_noise_poisson, test_data_denoised_P)
 mse(x_test, x_test_noise_speckle, test_data_denoised_S)
 mse(x_test, x_test_noise_SP, test_data_denoised_SP)
 
+print(autoencoder.summary())
+
 
 idx = 88
 ################################
@@ -202,3 +204,32 @@ plt.tight_layout()
 plt.savefig('noise_denoised_SP')
 
 ########################################
+
+
+""" plt.subplot(1, 3, 1)
+plt.imshow(x_test[idx])
+plt.title('original')
+
+plt.subplot(1, 3, 2)
+plt.imshow(x_test_noisy[idx])
+plt.title('gaussian')
+
+plt.subplot(1, 3, 3)
+plt.imshow(x_test_noise_poisson[idx])
+plt.title('poisson')
+
+plt.savefig('noises1') """
+
+plt.subplot(1, 2, 1)
+plt.imshow(x_test_noise_speckle[idx])
+plt.title('speckle')
+
+
+
+plt.savefig('noises2')
+
+
+plt.subplot(1, 2, 2)
+plt.imshow(x_test_noise_SP[idx])
+plt.title('s&p')
+plt.savefig('noises3')
