@@ -154,6 +154,10 @@ mse(x_test, x_test_noise_SP, test_data_denoised_SP)
 mse(x_test, x_test_rotated, test_data_denoised_rotation)
 
 idx = 93
+print(autoencoder.summary())
+
+
+idx = 88
 ################################
 plt.subplot(1, 3, 1)
 plt.imshow(x_test[idx])
