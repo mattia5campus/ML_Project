@@ -5,8 +5,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import TensorBoard
+import random
 
 import noisy as ns
+
 
 # Loading Dataset
 (x_train, _), (x_test, _) = mnist.load_data()
@@ -85,6 +87,24 @@ for i in range(len(x_test_noise_SP)):
     img_noise = ns.noisy('s&p', x_test[i])
     x_test_noise_SP[i] = img_noise
 
+
+def image_rotation(np_rotate):
+    rnd = random.randint(1, 3)
+    if rnd == 1:
+        np_rotate = np.rot90(np_rotate)
+    elif rnd == 2:
+        np_rotate = np.rot90(np_rotate, 2)
+    else:
+        np_rotate = np.rot90(np_rotate, 3)
+    return np_rotate
+
+
+x_test_rotated = np.copy(x_test)
+for i in range(len(x_test_rotated)):
+    img_noise = image_rotation(x_test[i])
+    x_test_rotated[i] = img_noise
+
+
 autoencoder.load_weights('autoencoder.h5')
 
 # gaussian noise
@@ -105,6 +125,8 @@ test_data_denoised_S = autoencoder.predict(x_test_noise_speckle)
 # img_sp_noised = ns.noisy('s&p',x_test[0])
 test_data_denoised_SP = autoencoder.predict(x_test_noise_SP)
 # print(np.shape(img_sp_noised))
+
+test_data_denoised_rotation = autoencoder.predict(x_test_rotated)
 
 
 # We will calculate the mean squared error of the whole test set.
@@ -129,9 +151,9 @@ mse(x_test, x_test_noisy, test_data_denoised_G)
 mse(x_test, x_test_noise_poisson, test_data_denoised_P)
 mse(x_test, x_test_noise_speckle, test_data_denoised_S)
 mse(x_test, x_test_noise_SP, test_data_denoised_SP)
+mse(x_test, x_test_rotated, test_data_denoised_rotation)
 
-
-idx = 88
+idx = 93
 ################################
 plt.subplot(1, 3, 1)
 plt.imshow(x_test[idx])
@@ -202,3 +224,18 @@ plt.tight_layout()
 plt.savefig('noise_denoised_SP')
 
 ########################################
+
+plt.subplot(1, 3, 1)
+plt.imshow(x_test[idx])
+plt.title('original')
+
+plt.subplot(1, 3, 2)
+plt.imshow(x_test_rotated[idx])
+plt.title('rotation_noise')
+
+plt.subplot(1, 3, 3)
+plt.imshow(test_data_denoised_rotation[idx])
+plt.title('rotation_denoised')
+
+plt.tight_layout()
+plt.savefig('noise_denoised_rotation')
